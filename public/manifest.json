@@ -1,0 +1,12 @@
+{
+  "name": "Admin Lingkungan",
+  "short_name": "Admin Lingkungan",
+  "description": "Aplikasi pengelolaan data warga dan iuran RT",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1976d2",
+  "icons": [
+    { "src": "/vite.svg", "sizes": "192x192", "type": "image/svg+xml" }
+  ]
+}

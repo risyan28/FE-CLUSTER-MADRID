@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    { "source": "/api/:path*", "destination": "https://cluster-madrid-api.onrender.com/api/:path*" },
+    { "source": "/uploads/:path*", "destination": "https://cluster-madrid-api.onrender.com/uploads/:path*" }
+  ],
+  "headers": [
+    {
+      "source": "/assets/(.*)",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+    }
+  ]
+}
