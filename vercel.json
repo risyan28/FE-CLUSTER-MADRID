@@ -1,7 +1,7 @@
 {
   "rewrites": [
-    { "source": "/api/:path*", "destination": "https://cluster-madrid-api.onrender.com/api/:path*" },
-    { "source": "/uploads/:path*", "destination": "https://cluster-madrid-api.onrender.com/uploads/:path*" }
+    { "source": "/api/:path*", "destination": "https://be-cluster-madrid-production.up.railway.app/api/:path*" },
+    { "source": "/uploads/:path*", "destination": "https://be-cluster-madrid-production.up.railway.app/uploads/:path*" }
   ],
   "headers": [
     {
