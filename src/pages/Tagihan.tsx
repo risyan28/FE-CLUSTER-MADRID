@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useAuth } from '../contexts/AuthContext';
 import api from '../services/api';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -27,6 +28,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 
 export default function Tagihan() {
+  const { user } = useAuth();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [data, setData] = useState([]);
@@ -77,7 +79,7 @@ export default function Tagihan() {
       setPreviewOpen(false);
       load();
     } catch (err: any) {
-      setSnack({ open: true, message: 'Gagal verifikasi', severity: 'error' });
+      setSnack({ open: true, message: err.response?.status === 403 ? err.response?.data?.message : err.response?.data?.message || 'Gagal verifikasi', severity: 'error' });
     }
   };
 
@@ -90,7 +92,7 @@ export default function Tagihan() {
       setPreviewOpen(false);
       load();
     } catch (err: any) {
-      setSnack({ open: true, message: 'Gagal menolak', severity: 'error' });
+      setSnack({ open: true, message: err.response?.status === 403 ? err.response?.data?.message : err.response?.data?.message || 'Gagal menolak', severity: 'error' });
     }
   };
 
@@ -254,8 +256,9 @@ export default function Tagihan() {
           <Button onClick={() => setPreviewOpen(false)} color="inherit">Tutup</Button>
           {previewData?.status !== 'lunas' && previewData?.pembayaran?.status !== 'lunas' && (
             <>
-              <Button variant="outlined" color="error" onClick={handleTolak}>Tolak</Button>
-              <Button variant="contained" color="success" onClick={handleVerifikasi}>Verifikasi</Button>
+              <Button variant="outlined" color="error" onClick={handleTolak} disabled={previewData?.pembayaran?.uploaded_by === user?.id}>Tolak</Button>
+              <Button variant="contained" color="success" onClick={handleVerifikasi} disabled={previewData?.pembayaran?.uploaded_by === user?.id}>Verifikasi</Button>
+              {previewData?.pembayaran?.uploaded_by === user?.id && <Typography variant="caption" color="error.main" sx={{ ml: 1 }}>Harus diverifikasi admin lain</Typography>}
             </>
           )}
         </DialogActions>
