@@ -41,7 +41,7 @@ export default function PembayaranSaya() {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [snack, setSnack] = useState({ open: false, message: '', severity: 'success' });
+  const [snack, setSnack] = useState<{ open: boolean; message: string; severity: 'success' | 'error' | 'warning' | 'info' }>({ open: false, message: '', severity: 'success' });
   const [dialog, setDialog] = useState({ open: false, tagihan_id: null as number | null });
   const [metode, setMetode] = useState<'transfer' | 'qris' | ''>('');
   const [bendahara, setBendahara] = useState<{ bank: { name: string; account: string; holder: string }; qris: { url: string } | null } | null>(null);

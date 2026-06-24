@@ -11,6 +11,7 @@ const pageTitles: Record<string, string> = {
   '/warga-hunian': 'Data Warga',
   '/iuran': 'Kelola Iuran',
   '/tagihan': 'Iuran IPKL',
+  '/pembayaran/saya': 'Tagihan Saya',
   '/kas': 'Kas',
   '/kegiatan': 'Kegiatan',
   '/qris': 'QRIS',

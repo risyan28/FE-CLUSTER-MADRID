@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import api from '../services/api';
+import { useAuth } from '../contexts/AuthContext';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -31,17 +32,18 @@ import EmptyState from '../components/EmptyState';
 import Grid from '@mui/material/Grid';
 
 export default function Pembayaran() {
+  const { user } = useAuth();
   const [data, setData] = useState([]);
   const [tagihanList, setTagihanList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState({ tagihan_id: '', metode: 'tunai', nominal: '', keterangan: '' });
   const [filter, setFilter] = useState({ status: '' });
-  const [snack, setSnack] = useState({ open: false, message: '', severity: 'success' });
+  const [snack, setSnack] = useState<{ open: boolean; message: string; severity: 'success' | 'error' | 'warning' | 'info' }>({ open: false, message: '', severity: 'success' });
 
   const load = async () => {
     try {
-      const params = {};
+      const params: { status?: string } = {};
       if (filter.status) params.status = filter.status;
       const [bayarRes, tagihanRes] = await Promise.all([
         api.get('/pembayaran', { params }),
@@ -80,17 +82,25 @@ export default function Pembayaran() {
   };
 
   const handleVerifikasi = async (id) => {
-    await api.put(`/pembayaran/${id}/verifikasi`);
-    setSnack({ open: true, message: 'Pembayaran diverifikasi', severity: 'success' });
-    load();
+    try {
+      await api.put(`/pembayaran/${id}/verifikasi`);
+      setSnack({ open: true, message: 'Pembayaran diverifikasi', severity: 'success' });
+      load();
+    } catch (err: any) {
+      setSnack({ open: true, message: err.response?.data?.message || 'Gagal verifikasi', severity: 'error' });
+    }
   };
 
   const handleTolak = async (id) => {
     const alasan = window.prompt('Alasan penolakan:');
     if (!alasan) return;
-    await api.put(`/pembayaran/${id}/tolak`, { alasan });
-    setSnack({ open: true, message: 'Pembayaran ditolak', severity: 'info' });
-    load();
+    try {
+      await api.put(`/pembayaran/${id}/tolak`, { alasan });
+      setSnack({ open: true, message: 'Pembayaran ditolak', severity: 'info' });
+      load();
+    } catch (err: any) {
+      setSnack({ open: true, message: err.response?.data?.message || 'Gagal menolak', severity: 'error' });
+    }
   };
 
   if (loading) return <Box sx={{ display: 'flex', justifyContent: 'center', mt: 10 }}><CircularProgress /></Box>;
@@ -138,8 +148,8 @@ export default function Pembayaran() {
                 <TableCell>
                   {item.status === 'menunggu' && (
                     <>
-                      <IconButton onClick={() => handleVerifikasi(item.id)} color="success"><CheckCircleIcon /></IconButton>
-                      <IconButton onClick={() => handleTolak(item.id)} color="error"><CancelIcon /></IconButton>
+                      <IconButton onClick={() => handleVerifikasi(item.id)} color="success" disabled={item.uploaded_by === user?.id}><CheckCircleIcon /></IconButton>
+                      <IconButton onClick={() => handleTolak(item.id)} color="error" disabled={item.uploaded_by === user?.id}><CancelIcon /></IconButton>
                     </>
                   )}
                 </TableCell>

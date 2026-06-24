@@ -31,7 +31,7 @@ export default function Iuran() {
   const [form, setForm] = useState(defaultForm);
   const [editId, setEditId] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [snack, setSnack] = useState({ open: false, message: '', severity: 'success' });
+  const [snack, setSnack] = useState<{ open: boolean; message: string; severity: 'success' | 'error' | 'warning' | 'info' }>({ open: false, message: '', severity: 'success' });
   const [confirm, setConfirm] = useState({ open: false, id: null });
   const [genLoading, setGenLoading] = useState(false);
   const [genBulan, setGenBulan] = useState(new Date().getMonth() + 1);

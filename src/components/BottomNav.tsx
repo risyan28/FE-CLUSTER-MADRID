@@ -19,7 +19,7 @@ import QrCodeIcon from '@mui/icons-material/QrCode';
 
 const adminItems = [
   { label: 'Dashboard', icon: <DashboardIcon />, path: '/dashboard' },
-  { label: 'Iuran IPKL', icon: <FactCheckIcon />, path: '/tagihan' },
+  { label: 'Tagihan', icon: <FactCheckIcon />, path: '/pembayaran/saya' },
   { label: 'Menu', icon: <MenuIcon />, path: '__menu__', isMenu: true },
   { label: 'Kegiatan', icon: <EventIcon />, path: '/kegiatan' },
   { label: 'Profil', icon: <PersonIcon />, path: '/profil' },
@@ -35,6 +35,7 @@ const wargaItems = [
 
 const adminMenuItems = [
   { text: 'Dashboard', icon: <DashboardIcon />, path: '/dashboard' },
+  { text: 'Tagihan Saya', icon: <FactCheckIcon />, path: '/pembayaran/saya' },
   { text: 'Data Warga', icon: <GroupIcon />, path: '/warga-hunian' },
   { text: 'Kelola Iuran', icon: <ReceiptIcon />, path: '/iuran' },
   { text: 'Iuran IPKL', icon: <FactCheckIcon />, path: '/tagihan' },

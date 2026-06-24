@@ -15,7 +15,7 @@ export default function QrisAdmin() {
   const [uploading, setUploading] = useState(false);
   const [preview, setPreview] = useState<string | null>(null);
   const [previewFile, setPreviewFile] = useState<File | null>(null);
-  const [snack, setSnack] = useState({ open: false, message: '', severity: 'success' });
+  const [snack, setSnack] = useState<{ open: boolean; message: string; severity: 'success' | 'error' | 'warning' | 'info' }>({ open: false, message: '', severity: 'success' });
   const fileRef = useRef<HTMLInputElement>(null);
 
   const load = async () => {

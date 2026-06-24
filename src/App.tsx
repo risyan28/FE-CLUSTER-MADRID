@@ -60,8 +60,7 @@ export default function App() {
         <Route path="/laporan" element={<RoleGuard role="admin"><Laporan /></RoleGuard>} />
         <Route path="/qris" element={<RoleGuard role="admin"><QrisAdmin /></RoleGuard>} />
 
-        {/* Warga-only pages */}
-        <Route path="/pembayaran/saya" element={<RoleGuard role="warga"><PembayaranSaya /></RoleGuard>} />
+        <Route path="/pembayaran/saya" element={<PembayaranSaya />} />
       </Route>
     </Routes>
   );

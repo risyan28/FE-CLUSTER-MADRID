@@ -23,7 +23,7 @@ export default function Laporan() {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState(null);
   const [filter, setFilter] = useState({ bulan: new Date().getMonth() + 1, tahun: new Date().getFullYear(), from: '', to: '' });
-  const [snack, setSnack] = useState({ open: false, message: '', severity: 'success' });
+  const [snack, setSnack] = useState<{ open: boolean; message: string; severity: 'success' | 'error' | 'warning' | 'info' }>({ open: false, message: '', severity: 'success' });
 
   const generateLaporan = async (type) => {
     setLoading(true);
@@ -42,22 +42,18 @@ export default function Laporan() {
 
   const downloadExcel = () => {
     if (!data?.data?.length) return;
-    const XLSX = window.XLSX;
-    if (!XLSX) {
-      import('xlsx').then(XLSX => {
-        const ws = XLSX.utils.json_to_sheet(data.data.map(d => ({
-          Warga: d.warga?.nama || d.nama || '-',
-          Iuran: d.iuran?.nama || d.kategori || '-',
-          Nominal: d.nominal,
-          Status: d.status || d.tipe || '-',
-          Tanggal: d.tanggal || '-'
-        })));
-        const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, 'Laporan');
-        XLSX.writeFile(wb, `laporan-${tab}-${Date.now()}.xlsx`);
-      });
-      return;
-    }
+    import('xlsx').then(XLSX => {
+      const ws = XLSX.utils.json_to_sheet(data.data.map(d => ({
+        Warga: d.warga?.nama || d.nama || '-',
+        Iuran: d.iuran?.nama || d.kategori || '-',
+        Nominal: d.nominal,
+        Status: d.status || d.tipe || '-',
+        Tanggal: d.tanggal || '-'
+      })));
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, 'Laporan');
+      XLSX.writeFile(wb, `laporan-${tab}-${Date.now()}.xlsx`);
+    });
   };
 
   return (
@@ -71,8 +67,8 @@ export default function Laporan() {
       <Box sx={{ display: 'flex', gap: 2, mb: 2, flexWrap: 'wrap' }}>
         {tab === 'iuran' && (
           <>
-            <TextField size="small" label="Bulan" type="number" value={filter.bulan} onChange={(e) => setFilter({ ...filter, bulan: e.target.value })} sx={{ width: 100 }} />
-            <TextField size="small" label="Tahun" type="number" value={filter.tahun} onChange={(e) => setFilter({ ...filter, tahun: e.target.value })} sx={{ width: 100 }} />
+            <TextField size="small" label="Bulan" type="number" value={filter.bulan} onChange={(e) => setFilter({ ...filter, bulan: parseInt(e.target.value) || 1 })} sx={{ width: 100 }} />
+            <TextField size="small" label="Tahun" type="number" value={filter.tahun} onChange={(e) => setFilter({ ...filter, tahun: parseInt(e.target.value) || new Date().getFullYear() })} sx={{ width: 100 }} />
             <Button variant="contained" onClick={() => generateLaporan('iuran')} disabled={loading}>Generate</Button>
           </>
         )}
