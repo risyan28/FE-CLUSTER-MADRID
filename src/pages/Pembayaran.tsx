@@ -88,7 +88,9 @@ export default function Pembayaran() {
       setSnack({ open: true, message: 'Pembayaran diverifikasi', severity: 'success' });
       load();
     } catch (err: any) {
-      setSnack({ open: true, message: err.response?.data?.message || 'Gagal verifikasi', severity: 'error' });
+      const msg = err.response?.status === 403 ? err.response?.data?.message
+        : err.response?.data?.message || 'Gagal verifikasi';
+      setSnack({ open: true, message: msg, severity: 'error' });
     }
   };
 
