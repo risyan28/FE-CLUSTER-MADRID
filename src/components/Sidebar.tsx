@@ -20,6 +20,7 @@ import PersonIcon from '@mui/icons-material/Person';
 
 const adminMenu = [
   { text: 'Dashboard', icon: <DashboardIcon />, path: '/dashboard' },
+  { text: 'Tagihan Saya', icon: <FactCheckIcon />, path: '/pembayaran/saya' },
   { text: 'Kelola Iuran', icon: <ReceiptIcon />, path: '/iuran' },
   { text: 'Iuran IPKL', icon: <FactCheckIcon />, path: '/tagihan' },
   { text: 'Kas', icon: <AccountBalanceIcon />, path: '/kas' },
