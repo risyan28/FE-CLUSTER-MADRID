@@ -25,6 +25,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 import AddIcon from '@mui/icons-material/Add';
 import CircularProgress from '@mui/material/CircularProgress';
+import Tooltip from '@mui/material/Tooltip';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import Autocomplete from '@mui/material/Autocomplete';
@@ -148,8 +149,12 @@ export default function Pembayaran() {
                 <TableCell>
                   {item.status === 'menunggu' && (
                     <>
-                      <IconButton onClick={() => handleVerifikasi(item.id)} color="success" disabled={item.uploaded_by === user?.id}><CheckCircleIcon /></IconButton>
-                      <IconButton onClick={() => handleTolak(item.id)} color="error" disabled={item.uploaded_by === user?.id}><CancelIcon /></IconButton>
+                      <Tooltip title={item.uploaded_by === user?.id ? 'Harus diverifikasi oleh admin lain' : ''}>
+                        <span><IconButton onClick={() => handleVerifikasi(item.id)} color="success" disabled={item.uploaded_by === user?.id}><CheckCircleIcon /></IconButton></span>
+                      </Tooltip>
+                      <Tooltip title={item.uploaded_by === user?.id ? 'Harus diverifikasi oleh admin lain' : ''}>
+                        <span><IconButton onClick={() => handleTolak(item.id)} color="error" disabled={item.uploaded_by === user?.id}><CancelIcon /></IconButton></span>
+                      </Tooltip>
                     </>
                   )}
                 </TableCell>
